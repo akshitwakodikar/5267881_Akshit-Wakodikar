@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/StepIn/5267881_Akshit-Wakodikar/HackerRank",
-      "program": "d:/StepIn/5267881_Akshit-Wakodikar/HackerRank/build/Debug/outDebug",
+      "cwd": "d:/StepIn/5267881_Akshit-Wakodikar/HackerRank/Week 1",
+      "program": "d:/StepIn/5267881_Akshit-Wakodikar/HackerRank/Week 1/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
