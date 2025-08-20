@@ -16,45 +16,34 @@ char** split_string(char*);
 
 int parse_int(char*);
 
-int* countingSort(int arr_count, int* arr, int* result_count) {
-    
-    *result_count = 100 ;
-    int *count = calloc(100,sizeof(int));
-    
-    for (int i = 0; i<arr_count; i++){
-        count[arr[i]]++;
+int towerBreakers(int n, int m) {
+    if (m == 1) {
+        return 2;  
     }
-    return count;
+    if (n % 2 == 0) {
+        return 2;   
+    }
+    return 1;       
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        char** first_multiple_input = split_string(rtrim(readline()));
 
-    int* arr = malloc(n * sizeof(int));
+        int n = parse_int(*(first_multiple_input + 0));
 
-    for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+        int m = parse_int(*(first_multiple_input + 1));
 
-        *(arr + i) = arr_item;
+        int result = towerBreakers(n, m);
+
+        fprintf(fptr, "%d\n", result);
     }
-
-    int result_count;
-    int* result = countingSort(n, arr, &result_count);
-
-    for (int i = 0; i < result_count; i++) {
-        fprintf(fptr, "%d", *(result + i));
-
-        if (i != result_count - 1) {
-            fprintf(fptr, " ");
-        }
-    }
-
-    fprintf(fptr, "\n");
 
     fclose(fptr);
 

@@ -12,49 +12,50 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
-int* countingSort(int arr_count, int* arr, int* result_count) {
-    
-    *result_count = 100 ;
-    int *count = calloc(100,sizeof(int));
-    
-    for (int i = 0; i<arr_count; i++){
-        count[arr[i]]++;
+char* gridChallenge(int grid_count, char** grid) {
+    for (int i = 0; i < grid_count; i++) {
+        int len = strlen(grid[i]);
+        qsort(grid[i], len, sizeof(char), (int (*)(const void*, const void*))strcmp);
     }
-    return count;
+
+    for (int col = 0; col < strlen(grid[0]); col++) {
+        for (int row = 0; row < grid_count - 1; row++) {
+            if (grid[row][col] > grid[row + 1][col]) {
+                static char no[] = "NO";
+                return no;
+            }
+        }
+    }
+
+    static char yes[] = "YES";
+    return yes;
+
 }
 
 int main()
 {
     FILE* fptr = fopen(getenv("OUTPUT_PATH"), "w");
 
-    int n = parse_int(ltrim(rtrim(readline())));
+    int t = parse_int(ltrim(rtrim(readline())));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    for (int t_itr = 0; t_itr < t; t_itr++) {
+        int n = parse_int(ltrim(rtrim(readline())));
 
-    int* arr = malloc(n * sizeof(int));
+        char** grid = malloc(n * sizeof(char*));
 
-    for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+        for (int i = 0; i < n; i++) {
+            char* grid_item = readline();
 
-        *(arr + i) = arr_item;
-    }
-
-    int result_count;
-    int* result = countingSort(n, arr, &result_count);
-
-    for (int i = 0; i < result_count; i++) {
-        fprintf(fptr, "%d", *(result + i));
-
-        if (i != result_count - 1) {
-            fprintf(fptr, " ");
+            *(grid + i) = grid_item;
         }
-    }
 
-    fprintf(fptr, "\n");
+        char* result = gridChallenge(n, grid);
+
+        fprintf(fptr, "%s\n", result);
+    }
 
     fclose(fptr);
 
@@ -147,27 +148,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {

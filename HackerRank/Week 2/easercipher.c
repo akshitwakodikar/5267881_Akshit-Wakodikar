@@ -12,19 +12,27 @@
 char* readline();
 char* ltrim(char*);
 char* rtrim(char*);
-char** split_string(char*);
 
 int parse_int(char*);
 
-int* countingSort(int arr_count, int* arr, int* result_count) {
-    
-    *result_count = 100 ;
-    int *count = calloc(100,sizeof(int));
-    
-    for (int i = 0; i<arr_count; i++){
-        count[arr[i]]++;
+char* caesarCipher(char* s, int k) {
+  int n = strlen(s);
+    char* result = malloc((n + 1) * sizeof(char)); 
+    k = k % 26; 
+
+    for (int i = 0; i < n; i++) {
+        char c = s[i];
+        if (c >= 'a' && c <= 'z') {
+            result[i] = ((c - 'a' + k) % 26) + 'a';
+        } else if (c >= 'A' && c <= 'Z') {
+            result[i] = ((c - 'A' + k) % 26) + 'A';
+        } else {
+            result[i] = c; 
+        }
     }
-    return count;
+
+    result[n] = '\0'; 
+    return result;
 }
 
 int main()
@@ -33,28 +41,13 @@ int main()
 
     int n = parse_int(ltrim(rtrim(readline())));
 
-    char** arr_temp = split_string(rtrim(readline()));
+    char* s = readline();
 
-    int* arr = malloc(n * sizeof(int));
+    int k = parse_int(ltrim(rtrim(readline())));
 
-    for (int i = 0; i < n; i++) {
-        int arr_item = parse_int(*(arr_temp + i));
+    char* result = caesarCipher(s, k);
 
-        *(arr + i) = arr_item;
-    }
-
-    int result_count;
-    int* result = countingSort(n, arr, &result_count);
-
-    for (int i = 0; i < result_count; i++) {
-        fprintf(fptr, "%d", *(result + i));
-
-        if (i != result_count - 1) {
-            fprintf(fptr, " ");
-        }
-    }
-
-    fprintf(fptr, "\n");
+    fprintf(fptr, "%s\n", result);
 
     fclose(fptr);
 
@@ -147,27 +140,6 @@ char* rtrim(char* str) {
     *(end + 1) = '\0';
 
     return str;
-}
-
-char** split_string(char* str) {
-    char** splits = NULL;
-    char* token = strtok(str, " ");
-
-    int spaces = 0;
-
-    while (token) {
-        splits = realloc(splits, sizeof(char*) * ++spaces);
-
-        if (!splits) {
-            return splits;
-        }
-
-        splits[spaces - 1] = token;
-
-        token = strtok(NULL, " ");
-    }
-
-    return splits;
 }
 
 int parse_int(char* str) {
